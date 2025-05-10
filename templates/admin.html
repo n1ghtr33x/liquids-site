@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель</title>
+  <style>
+    body {
+        font-family: sans-serif;
+        margin: 10px; /* Уменьшим общие отступы на мобильных */
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    h1 {
+        color: #dc3545;
+        text-align: center;
+        margin-bottom: 20px; /* Увеличим отступ снизу */
+    }
+    .container {
+        max-width: 100%; /* Займем всю ширину на мобильных */
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 15px; /* Уменьшим внутренние отступы на мобильных */
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px; /* Уменьшим верхний отступ */
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .action-buttons form {
+        display: inline;
+        margin-right: 5px;
+    }
+    .delete-button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+    .edit-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+    .admin-link, .back-link {
+        display: block;
+        margin-top: 15px; /* Уменьшим верхний отступ */
+        color: #dc3545;
+        text-decoration: none;
+        text-align: center;
+    }
+    .back-link {
+        color: #007bff;
+    }
+    .admin-link:hover, .back-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Медиа-запрос для экранов шириной до 600px (типичные телефоны) */
+    @media (max-width: 600px) {
+        table {
+            border: 0;
+        }
+        thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+        tr {
+            border-bottom: 3px solid #ddd;
+            display: block;
+            margin-bottom: .625em;
+        }
+        td {
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: .8em;
+            text-align: right;
+        }
+        td::before {
+            content: attr(data-label);
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        td:last-child {
+            border-bottom: 0;
+        }
+        .action-buttons {
+            text-align: left;
+        }
+        .action-buttons form {
+            margin-bottom: 5px;
+            display: block; /* Кнопки действий на отдельных строках */
+        }
+        .edit-button, .delete-button {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+        }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Админ-панель</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Цена</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for liquid in liquids %}
+    <tr>
+      <td data-label="ID">{{ liquid.id }}</td>
+      <td data-label="Название">{{ liquid.name }}</td>
+      <td data-label="Цена">{{ liquid.price if liquid.price is not none else '-' }}</td>
+      <td class="action-buttons" data-label="Действия">
+        <a href="{{ url_for('edit_liquid', liquid_id=liquid.id) }}" class="edit-button">Редактировать</a>
+        <form action="{{ url_for('delete_liquid', liquid_id=liquid.id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить {{ liquid.name }}?');">
+          <button type="submit" class="delete-button">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Нет добавленных жидкостей.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('index') }}" class="back-link">Вернуться на главную</a>
+</div>
+</body>
+</html>

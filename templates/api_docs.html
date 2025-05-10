@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Документация API</title>
+  <style>
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    h1, h2 {
+        color: #007bff;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .endpoint {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .endpoint h3 {
+        margin-top: 0;
+        color: #28a745;
+    }
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+    .back-link:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Документация API</h1>
+
+  <div class="endpoint">
+    <h3>GET /api/liquids</h3>
+    <p>Возвращает JSON-список всех доступных жидкостей.</p>
+    <p><strong>Пример ответа:</strong></p>
+    <pre>
+            <code>
+[
+  {
+    "id": 1,
+    "name": "Название жидкости 1",
+    "price": 150.0
+  },
+  {
+    "id": 2,
+    "name": "Другое название",
+    "price": 200.5
+  }
+]
+            </code>
+            </pre>
+  </div>
+
+  <div class="endpoint">
+    <h3>GET /api/analytics</h3>
+    <p>Возвращает JSON-объект с количеством голосов для каждой жидкости.</p>
+    <p><strong>Пример ответа:</strong></p>
+    <pre>
+            <code>
+{
+  "Название жидкости 1": 12,
+  "Другое название": 5
+}
+            </code>
+            </pre>
+  </div>
+
+  <a href="{{ url_for('index') }}" class="back-link">Вернуться на главную</a>
+</div>
+</body>
+</html>

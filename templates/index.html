@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог жиж</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #007bff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .liquid-form, .liquid-list {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        input[type=text], input[type=number], button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .liquid-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .liquid-item:last-child {
+            border-bottom: none;
+        }
+        .liquid-info {
+            flex-grow: 1;
+        }
+        .liquid-actions form {
+            margin: 0;
+        }
+        .vote-button {
+            background-color: #28a745;
+        }
+        .vote-button:hover {
+            background-color: #1e7e34;
+        }
+        .analytics-link {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .analytics-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Каталог жиж</h1>
+
+    <div class="liquid-form">
+        <h2>Добавить новую жижу</h2>
+        <form action="{{ url_for('add_liquid') }}" method="POST">
+            <input type="text" name="name" placeholder="Название жижи" required>
+            <input type="number" name="price" placeholder="Цена (опционально)">
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    <div class="liquid-list">
+        <h2>Список жиж</h2>
+        {% if liquids %}
+        {% for liquid in liquids %}
+        <div class="liquid-item">
+            <div class="liquid-info">
+                <h3>{{ liquid.name }}</h3>
+                {% if liquid.price %}
+                <p>Цена: {{ liquid.price }}</p>
+                {% endif %}
+                <p>Голосов: {{ liquid.votes|length }}</p>
+            </div>
+            <div class="liquid-actions">
+                <form action="{{ url_for('vote', liquid_id=liquid.id) }}" method="POST">
+                    <button type="submit" class="vote-button">Голосовать</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Пока нет ни одной добавленной жижи.</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <h2>Аналитика</h2>
+        <p><a href="{{ url_for('analytics') }}" class="analytics-link">Посмотреть аналитику в виде диаграммы</a></p>
+        <p><a href="{{ url_for('api_docs') }}" class="analytics-link">Документация API</a></p>
+    </div>
+</div>
+</body>
+</html>

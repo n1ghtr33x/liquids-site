@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактировать жижу</title>
+  <style>
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    h1 {
+        color: #007bff;
+        text-align: center;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    form {
+        margin-top: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input[type=text], input[type=number], button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    button[type=submit] {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type=submit]:hover {
+        background-color: #0056b3;
+    }
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+        text-align: center;
+    }
+    .back-link:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Редактировать жижу</h1>
+  <form action="{{ url_for('update_liquid', liquid_id=liquid.id) }}" method="POST">
+    <label for="name">Название:</label>
+    <input type="text" id="name" name="name" value="{{ liquid.name }}" required>
+
+    <label for="price">Цена:</label>
+    <input type="number" id="price" name="price" value="{{ liquid.price if liquid.price is not none else '' }}" step="0.01">
+
+    <button type="submit">Сохранить изменения</button>
+  </form>
+  <a href="{{ url_for('admin') }}" class="back-link">Назад к админ-панели</a>
+</div>
+</body>
+</html>
